@@ -1,0 +1,110 @@
+﻿@model IEnumerable<ContactBook.Models.Contacts>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="text-light">List of contacts</h1>
+
+<p>
+    <a class="btn btn-success btn-sm" href="/Contacts/Create">Create a new contact!</a>
+</p>
+
+<form method="get" asp-action="Index">
+    <p>
+        <input type="search" placeholder="Search a contact..." value="@ViewData["GetContactDetails"]" name="ContactSearch" style="width:500px;" />
+        <input type="submit" value="Search" class="btn btn-success btn-sm"/>
+        <a href="@Url.Action("DownloadSearchResults", "Contacts")" class="btn btn-success btn-sm">Download to CSV</a>
+        <a href="@Url.Action("DownloadToExel", "Contacts")" class="btn btn-success btn-sm">Download to EXEL</a>
+    </p>
+</form>
+
+
+
+<table class="table table-dark table-striped">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Lastname
+            </th>
+            <th>
+                Phone
+            </th>
+            <th>
+                Address
+            </th>
+            <th>
+                Emails
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var contact in Model)
+        {
+        <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => contact.Id)
+                </td>
+            
+                <td>
+                    @Html.DisplayFor(modelItem => contact.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contact.Lastname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contact.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contact.Address)
+                </td>
+                <td>
+                    <ul>
+                        @foreach (var email in contact.Email)
+                        {
+                            <li>@Html.DisplayFor(modelitem => email.EmailAddress)</li>
+                        }
+                    </ul>
+                </td>
+            <td>
+                    <a class="btn btn-success btn-sm" href="/Contacts/Edit?id=@contact.Id">Edit</a> |
+                    <a class="btn btn-success btn-sm" href="/Contacts/Details?id=@contact.Id">Details</a> |
+                    <a class="btn btn-danger btn-sm" href="/Contacts/Delete?id=@contact.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<form method="post" enctype="multipart/form-data" asp-action="ImportCsv">
+    <div class="form-group">
+        <label for="file">Upload CSV FILE</label>
+        <input class="btn btn-success btn-sm" type="file" name="file" class="form-control-file" id="file" onchange="displayFileName()" />
+
+        <button type="submit" class="btn btn-success btn-sm">Import</button>
+    </div>
+</form>
+
+
+
+@section Scripts {
+    <script>
+        function displayFileName() {
+            var fileInput = document.getElementById('file');
+            var uploadedFileNameElement = document.getElementById('uploadedFileName');
+
+            if (fileInput.files && fileInput.files[0]) {
+                uploadedFileNameElement.textContent = "Selected file: " + fileInput.files[0].name;
+            } else {
+                uploadedFileNameElement.textContent = "";
+            }
+        }
+    </script>
+}

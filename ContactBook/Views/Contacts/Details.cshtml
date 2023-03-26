@@ -1,0 +1,60 @@
+﻿@model ContactBook.Models.Contacts
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 class="text-light">Details</h1>
+
+<div class="text-light">
+    <hr />
+    <dl class="row bg-dark">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lastname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lastname)
+        </dd>
+@*        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>*@
+
+        <dt class="col-sm-2">
+            Emails
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var email in Model.Email)
+            {
+                <div>@email.EmailAddress</div>
+            }
+        </dd>
+
+
+
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-success btn-sm">Edit</a> |
+    <a class="btn btn-success btn-sm" href="/Contacts">Back to List</a>
+</div>

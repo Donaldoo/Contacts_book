@@ -1,0 +1,83 @@
+﻿@model ContactBook.Models.Contacts
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="text-light">Edit</h1>
+
+<h4 class="text-light">Edit contact:</h4>
+<hr />
+<div class="row bg-dark">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label text-light"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lastname" class="control-label text-light"></label>
+                <input asp-for="Lastname" class="form-control" />
+                <span asp-validation-for="Lastname" class="text-danger"></span>
+            </div>
+@*            <div class="form-group">
+                <label asp-for="Email" class="control-label text-light"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>*@
+
+            <div class="form-group">
+                <label>Emails</label>
+                <div id="emailContainer">
+                    @{
+                        int emailIndex = 0;
+                        foreach (var email in Model.Email)
+                        {
+                            <input type="email" name="Emails[@emailIndex].EmailAddress" value="@email.EmailAddress" class="form-control @(emailIndex > 0 ? "mt-2" : "")" />
+                            <input type="hidden" name="Emails[@emailIndex].Id" value="@email.ContactId" />
+                            emailIndex++;
+                        }
+                    }
+                </div>
+                <button type="button" id="addEmail" class="btn btn-primary mt-2">Add Email</button>
+            </div>
+
+
+
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label text-light"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label text-light"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-success btn-sm" />
+                <a class="btn btn-success btn-sm" href="/Contacts">Back to list</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        let emailIndex = @Model.Email.Count;
+        document.getElementById('addEmail').onclick = () => {
+            const emailContainer = document.getElementById('emailContainer');
+            const newEmailInput = document.createElement('input');
+            newEmailInput.setAttribute('type', 'email');
+            newEmailInput.setAttribute('name', `Emails[${emailIndex}].EmailAddress`);
+            newEmailInput.setAttribute('class', 'form-control mt-2');
+            emailContainer.appendChild(newEmailInput);
+            emailIndex++;
+        };
+    </script>
+}
